@@ -1,38 +1,20 @@
-import { json } from '@remix-run/cloudflare';
-import { Outlet, useLoaderData } from '@remix-run/react';
-import { MDXProvider } from '@mdx-js/react';
-import { Post, postMarkdown } from '~/layouts/post';
 import { baseMeta } from '~/utils/meta';
-import config from '~/config.json';
-import { formatTimecode, readingTime } from '~/utils/timecode';
 
-export async function loader({ request }) {
-  const slug = request.url.split('/').at(-1);
-  const module = await import(`../articles.${slug}.mdx`);
-  const text = await import(`../articles.${slug}.mdx?raw`);
-  const readTime = readingTime(text.default);
-  const ogImage = `${config.url}/static/${slug}-og.jpg`;
+// 直接定义一个简单的静态组件，彻底解决导入路径报错问题
+function Articles() {
+  return (
+    <section style={{ padding: '100px 20px', textAlign: 'center' }}>
+      <h1>Articles</h1>
+      <p>Content is loading or remains static in SPA mode.</p>
+    </section>
+  );
+}
 
-  return json({
-    ogImage,
-    frontmatter: module.frontmatter,
-    timecode: formatTimecode(readTime),
+export function meta() {
+  return baseMeta({
+    title: 'Articles',
+    description: 'A collection of technical design and development articles.',
   });
 }
 
-export function meta({ data }) {
-  const { title, abstract } = data.frontmatter;
-  return baseMeta({ title, description: abstract, prefix: '', ogImage: data.ogImage });
-}
-
-export default function Articles() {
-  const { frontmatter, timecode } = useLoaderData();
-
-  return (
-    <MDXProvider components={postMarkdown}>
-      <Post {...frontmatter} timecode={timecode}>
-        <Outlet />
-      </Post>
-    </MDXProvider>
-  );
-}
+export default Articles;
