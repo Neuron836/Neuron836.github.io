@@ -1,35 +1,41 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [main]
 
-# 关键：添加以下权限配置
+# 核心权限声明，必须顶格写，不能有额外的空格
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 确保所有步骤在一个 Job 里完成
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
+
       - name: Install dependencies
         run: npm install
+
       - name: Build project
         run: npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 注意：这里请确认你的项目打包后生成的文件夹名字
-          # 如果是 Remix 项目，通常是 ./build/client 或 ./public
-          path: ./build/client 
+          # 根据你之前的截图，确认静态文件在 build/client
+          path: ./build/client
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
