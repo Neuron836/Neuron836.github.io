@@ -27,6 +27,7 @@ export default defineConfig({
     }),
     remixCloudflareDevProxy(),
     remix({
+      ssr: false, // 核心修改：关闭服务器端渲染，强制生成 index.html
       routes(defineRoutes) {
         return defineRoutes(route => {
           route('/', 'routes/home/route.js', { index: true });

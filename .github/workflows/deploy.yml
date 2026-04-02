@@ -23,6 +23,15 @@ jobs:
           npm install
           npm run build
 
+      - name: Ensure index.html exists
+        # 检查并确保 build/client 目录下有 index.html 文件
+        run: |
+          ls -R build/client
+          if [ ! -f build/client/index.html ]; then
+            # 如果没有 index.html，尝试将生成的 html 文件改名或复制
+            cp build/client/*.html build/client/index.html || echo "No html found"
+          fi
+
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
