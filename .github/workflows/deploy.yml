@@ -2,6 +2,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+
+# 关键：添加以下权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -20,6 +27,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build/client # 如果你的编译输出是在 dist 或其他，这里要改名
+          # 注意：这里请确认你的项目打包后生成的文件夹名字
+          # 如果是 Remix 项目，通常是 ./build/client 或 ./public
+          path: ./build/client 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
