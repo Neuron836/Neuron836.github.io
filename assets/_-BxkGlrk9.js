@@ -1,0 +1,1 @@
+import{j as t}from"./jsx-runtime-CkhKHiLo.js";function n(){return[{title:"404 - Not Found"}]}function o(){return t.jsxs("div",{style:{padding:"20px",textAlign:"center"},children:[t.jsx("h1",{children:"404"}),t.jsx("p",{children:"Page not found."}),t.jsx("a",{href:"/",children:"Back to Home"})]})}export{o as default,n as meta};
